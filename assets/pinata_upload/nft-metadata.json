@@ -1,0 +1,15 @@
+{
+    "attributes": [
+      {
+        "trait_type": "Breed",
+        "value": "Maltipoo"
+      },
+      {
+        "trait_type": "Eye color",
+        "value": "Mocha"
+      }
+    ],
+    "description": "Solitaire Glory Logo",
+    "image": "https://gateway.pinata.cloud/ipfs/QmeP1MmPephQiA8dubUKrra7Q58aMRtydHGfUKm8UoQ3pA",
+    "name": "Solitaire"
+}
