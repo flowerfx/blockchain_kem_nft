@@ -1,20 +1,27 @@
+//Contract based on [https://docs.openzeppelin.com/contracts/3.x/erc721](https://docs.openzeppelin.com/contracts/3.x/erc721)
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-
-contract ZombieFactory {
+//import ownable to this
+import "@openzeppelin/contracts/access/Ownable.sol";
+contract ZombieFactory is Ownable {
     //this variable is store enternal on blockchain
     //dna of the zombie will has 16 character
     uint dnaDigits = 16;
     uint dnaModulus = 10 ** dnaDigits; // = 10^16
+    //time countdown will be set to 1 days 
+    uint32 cooldownTime = 1 days;
     //zombie struct
     struct Zombie {
         //name of the zoombie
         string name;
-        //meta data of the zombie in json
-        string metadata;
-        //id of the zombie
-        uint id;
         //dna of the zombie
         uint dna;
+        //id of the zombie
+        uint32 id;
+        //
+        uint32 level;
+        //
+        uint32 readyTime;
     }
     //list of the zombie in arrays
     Zombie[] public ls_zombies;
@@ -23,6 +30,7 @@ contract ZombieFactory {
     mapping (uint => address) public zombieToOwner;
     //which address of the user will have the number zombie counting
     mapping (address => uint) ownerZombieCount;
+
     /**********************************
      *  EVENT FUNCTION DEFINED HERE  *
      **********************************/
@@ -45,22 +53,22 @@ contract ZombieFactory {
         //we will create the dna first 
         uint dna = INTERNAL_generateRandomDna(name);
         //then we will create the zombie
-        INTERNAL_SOL_createZombie(name, dna);
+        PROTECTED_createZombie(name, dna);
     }
 
-    /***********************************
-     *  INERNAL FUNCTION DEFINED HERE  *
-     ***********************************/
+    /************************************************************************
+     *  PROTECTED FUNCTION DEFINED HERE (IN SOLIDITY DEFINED AS INTERNAL )  *
+     ************************************************************************/
 
     /**
-     * INTERNAL_SOL_getAddressByZombieID : internal function to get address of user that hold the zombie by ID
+     * PROTECTED_getAddressByZombieID : internal function to get address of user that hold the zombie by ID
      * the function have 'view' attribute mean the value return is constant and could not be modified
      * the function have mark 'internal' mean, the constract inherited this constract can call this func
      * @param zombieID : id of the zoombie
      * @return succeed : get the address succeed or not
      * @return res : address if succeed
      */
-    function INTERNAL_SOL_getAddressByZombieID(uint zombieID) internal view returns (bool succeed, address res) {
+    function PROTECTED_getAddressByZombieID(uint zombieID) internal view returns (bool succeed, address res) {
         if(zombieID >= ls_zombies.length) {
             succeed = false;
             res = address(0x0);
@@ -72,15 +80,16 @@ contract ZombieFactory {
     }
 
     /**
-     * INTERNAL_SOL_createZombie : internal function to create the zombie with given params
+     * PROTECTED_createZombie : internal function to create the zombie with given params
      * the function have mark 'internal' mean, the constract inherited this constract can call this func
      * @param name : name of the zombie
      * @param dna : dna of the zombie
      */
-    function INTERNAL_SOL_createZombie(string memory name, uint dna) internal {
+    function PROTECTED_createZombie(string memory name, uint dna) internal {
         //size of the list zoombie
         uint len = ls_zombies.length;
-        ls_zombies.push(Zombie(name , "", len , dna));
+        //add the new zombie to the list control
+        ls_zombies.push(Zombie(name , uint32(len) , dna , 1 , uint32(block.timestamp + timeCountdown)));
         //
         // msg.sender is global value that handle the address of the user in excusing this contract
         // @param len is the id of the zombie
