@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 //import ownable to this
-import "@openzeppelin/contracts/access/Ownable.sol";
+//import "@openzeppelin/contracts/access/Ownable.sol";
+import "./Ownable.sol";
 contract ZombieFactory is Ownable {
     //this variable is store enternal on blockchain
     //dna of the zombie will has 16 character
@@ -22,8 +23,13 @@ contract ZombieFactory is Ownable {
         uint32 level;
         //
         uint32 readyTime;
+        //number win of this zombie
+        uint16 winCount;
+        //number lose of this zombie
+        uint16 lossCount;
     }
     //list of the zombie in arrays
+    //in the blockchain, the user will share this list of zombies
     Zombie[] public ls_zombies;
     //mapping of the zombie owner
     //which id of zombie will be mapped with address of the user
@@ -63,6 +69,7 @@ contract ZombieFactory is Ownable {
     /**
      * PROTECTED_getAddressByZombieID : internal function to get address of user that hold the zombie by ID
      * the function have 'view' attribute mean the value return is constant and could not be modified
+     * 'view' also mean that function read on blockchain and dont modify anything on its
      * the function have mark 'internal' mean, the constract inherited this constract can call this func
      * @param zombieID : id of the zoombie
      * @return succeed : get the address succeed or not
@@ -89,7 +96,7 @@ contract ZombieFactory is Ownable {
         //size of the list zoombie
         uint len = ls_zombies.length;
         //add the new zombie to the list control
-        ls_zombies.push(Zombie(name , uint32(len) , dna , 1 , uint32(block.timestamp + timeCountdown)));
+        ls_zombies.push(Zombie(name , dna , uint32(len) , 1 , uint32(block.timestamp + cooldownTime) , 0 , 0 ));
         //
         // msg.sender is global value that handle the address of the user in excusing this contract
         // @param len is the id of the zombie
@@ -106,6 +113,7 @@ contract ZombieFactory is Ownable {
     /**
      * INTERNAL_generateRandomDna : private function to generate the DNA, with param string by mem (like const string & in c++)
      * the function have 'view' attribute mean the value return is constant and could not be modified
+     * 'view' also mean that function read on blockchain and dont modify anything on its
      * @param str : string to seed
      * @return unint : DNA in uint with 16 char
      */
@@ -121,6 +129,7 @@ contract ZombieFactory is Ownable {
     /**
      * INTERNAL_multiply : private pure function to mutiply 2 number
      * the function have 'pure' attribute ensure that they not read or modify the state
+     * 'pure' also mean that function dont read or write on blockchain
      * @param a : number 1 in uint
      * @param b : number 2 in uint
      * @return a*b in uint
@@ -132,6 +141,7 @@ contract ZombieFactory is Ownable {
     /**
      * INTERNAL_add : private pure function to add 2 number
      * the function have 'pure' attribute ensure that they not read or modify the state
+     * 'pure' also mean that function dont read or write on blockchain
      * @param a : number 1 in uint
      * @param b : number 2 in uint
      * @return c = a+b in uint

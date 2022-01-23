@@ -28,6 +28,20 @@ contract ZombieFeeding is ZombieFactory {
      */
     address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
     KittyInterface kittyContract = KittyInterface(ckAddress);
+    /**
+     * ownerOf : modifier to require zombie is own of user who excuse the contract
+     * @param zombieId : id of the zombie need to be checked
+     */  
+    modifier ownerOf(uint zombieId) {
+        //make sure the user excuse this contract same as the mapping zombieToOwer
+        (bool res , address add) = PROTECTED_getAddressByZombieID(zombieId);
+        require(res == true);
+        require(msg.sender == add);
+        _;
+    }
+    /************************************
+     *  EXTERNAL FUNCTION DEFINED HERE  *
+     ************************************/  
 
     /**
      * setKittyContractAddress : in case the contract is change, so we re-update the contract of the kitty
@@ -41,6 +55,22 @@ contract ZombieFeeding is ZombieFactory {
         }
         ckAddress = kittyAdrress;
         kittyContract = KittyInterface(ckAddress);
+    }
+    /**********************************
+     *  PUBLIC FUNCTION DEFINED HERE  *
+     **********************************/    
+
+    /**
+     * feedOnKitty : public function that will trigger when zombie eat a kitty
+     * this function will excuse the function from external contract is kittyInterface and return the kittyDna
+     * @param zombieID : id of the zombie
+     * @param kittyID : id of the kitty
+     */
+    function feedOnKitty(uint zombieID, uint kittyID) public {
+        // get the kittyDna from external contract
+        (,,,,,,,,,uint kittyDna) = kittyContract.getKitty(kittyID);
+        // excuse this ....
+        PROTECTED_feedAndMultiply(zombieID, kittyDna, "kitty");
     }
 
     /************************************************************************
@@ -58,25 +88,22 @@ contract ZombieFeeding is ZombieFactory {
     /**
      * PROTECTED_isReady : internal function that check the zombie is ready or not
      * attribute 'view' mean is constant
+     * 'view' also mean that function read on blockchain and dont modify anything on its
      * @param zombie : the zombie will be checked
      */
     function PROTECTED_isReady(Zombie storage zombie) internal view returns (bool) {
-
         return (zombie.readyTime <= block.timestamp);
     }
 
     /**
      * PROTECTED_feedAndMultiply : protected function that will perform the zombie bite another one and create new zombie
+     * modifier 'ownerOf()' mean that user excute this contract must own the zombie
      * this function will only permit user that have own the zombie to excuse this
      * change the 'public' into 'internal' to check the security
      * @param zombieID : id of the zombie
      * @param targetDna : DNA of the one is bited
      */
-    function PROTECTED_feedAndMultiply(uint zombieID, uint targetDna, string memory species) public {
-        //make sure the user excuse this contract same as the mapping zombieToOwer
-        (bool res , address add) = PROTECTED_getAddressByZombieID(zombieID);
-        require(res == true);
-        require(msg.sender == add);
+    function PROTECTED_feedAndMultiply(uint zombieID, uint targetDna, string memory species) internal ownerOf(zombieID) {
         //storage mean the zombie is storage from blockchain network
         Zombie storage zombie = ls_zombies[zombieID];
         //make sure the zombie is ready
@@ -94,22 +121,5 @@ contract ZombieFeeding is ZombieFactory {
         PROTECTED_createZombie("Unknown_Name", newDna);
         //trigger cooldown of the zombie
         PROTECTED_triggerCooldown(zombie);
-    }
-
-    /**********************************
-     *  PUBLIC FUNCTION DEFINED HERE  *
-     **********************************/    
-
-    /**
-     * feedOnKitty : public function that will trigger when zombie eat a kitty
-     * this function will excuse the function from external contract is kittyInterface and return the kittyDna
-     * @param zombieID : id of the zombie
-     * @param kittyID : id of the kitty
-     */
-    function feedOnKitty(uint zombieID, uint kittyID) public {
-        // get the kittyDna from external contract
-        (,,,,,,,,,uint kittyDna) = kittyContract.getKitty(kittyID);
-        // excuse this ....
-        PROTECTED_feedAndMultiply(zombieID, kittyDna, "kitty");
     }
 }
