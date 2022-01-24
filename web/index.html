@@ -11,11 +11,23 @@
   <body>
     <div id="txStatus"></div>
     <div id="zombies"></div>
+    <div id="create_zombie">
+      <form>
+        <label for="fname">Input name zombie:</label><br>
+        <input type="text" id="name_zombie" name="name_zombie"><br>
+      </form>
+      <button type="button" onclick="funcClickCreateZombie()">Create Random Zombie</button>
+  </div>
     <script>
       var cryptoZombies;
       var userAccount;
       var web3provider;
       var web3accounts;
+
+      function funcClickCreateZombie() {
+        var input = document.getElementById("name_zombie").value;
+        createRandomZombie(name);
+      }
 
       function startApp() {
         //
@@ -57,6 +69,7 @@
           });
         }
       }
+      
       function createRandomZombie(name) {
         // This is going to take a while, so update the UI to let the user know
         // the transaction has been sent
@@ -88,9 +101,21 @@
         });
       }
 
+      function levelUp(zombieId) {
+        $("#txStatus").text("Leveling up your zombie...");
+        return cryptoZombies.methods.levelUp(zombieId)
+        .send({ from: userAccount, value: web3.utils.toWei("0.001", "ether") })
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Power overwhelming! Zombie successfully leveled up");
+        })
+        .on("error", function(error) {
+          $("#txStatus").text(error);
+        });
+      }
+
       // Start here
       function getZombieDetails(id) {
-        return cryptoZombies.methods.zombies(id).call()
+        return cryptoZombies.methods.ls_zombies(id).call()
       }
       
       function zombieToOwner(id) {
