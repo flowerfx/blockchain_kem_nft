@@ -478,6 +478,301 @@
       "artifacts": [
         "IERC165"
       ]
+    },
+    "/Users/Shared/Project/Blockchain/nft/kem-nft/contracts/ERC721.sol": {
+      "lastModificationDate": 1642992785185,
+      "contentHash": "5eed3bf1c28f4967f06b486d7b25b646",
+      "sourceName": "contracts/ERC721.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC721"
+      ]
+    },
+    "/Users/Shared/Project/Blockchain/nft/kem-nft/contracts/ZombieOwnership.sol": {
+      "lastModificationDate": 1642995699708,
+      "contentHash": "00fcac5b5f1c36e5a9b3a8d2546fbcae",
+      "sourceName": "contracts/ZombieOwnership.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./ERC721.sol",
+        "./ZombieAttack.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ZombieOwnership"
+      ]
+    },
+    "/Users/Shared/Project/Blockchain/nft/kem-nft/contracts/ZombieAttack.sol": {
+      "lastModificationDate": 1642992983357,
+      "contentHash": "1a22b65c959d152f7b24643ebd2290b3",
+      "sourceName": "contracts/ZombieAttack.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./ZombieHelper.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ZombieAttack"
+      ]
+    },
+    "/Users/Shared/Project/Blockchain/nft/kem-nft/contracts/ZombieHelper.sol": {
+      "lastModificationDate": 1642992963588,
+      "contentHash": "53ebfdba254fc5d9c982a8fafc28b9d4",
+      "sourceName": "contracts/ZombieHelper.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./ZombieFeeding.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ZombieHelper"
+      ]
+    },
+    "/Users/Shared/Project/Blockchain/nft/kem-nft/contracts/ZombieFeeding.sol": {
+      "lastModificationDate": 1642995761537,
+      "contentHash": "d656c1ec4275e6ba04b86373765b3f3d",
+      "sourceName": "contracts/ZombieFeeding.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./ZombieFactory.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "KittyInterface",
+        "ZombieFeeding"
+      ]
+    },
+    "/Users/Shared/Project/Blockchain/nft/kem-nft/contracts/ZombieFactory.sol": {
+      "lastModificationDate": 1642992945560,
+      "contentHash": "ef84e56156aee41dcad5dbad3c44339e",
+      "sourceName": "contracts/ZombieFactory.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./SafeMath.sol",
+        "./Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ZombieFactory"
+      ]
+    },
+    "/Users/Shared/Project/Blockchain/nft/kem-nft/contracts/SafeMath.sol": {
+      "lastModificationDate": 1642992457704,
+      "contentHash": "e41de1ac446cd7933d79a8bf4f1e5fff",
+      "sourceName": "contracts/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "SafeMath",
+        "SafeMath16",
+        "SafeMath32"
+      ]
+    },
+    "/Users/Shared/Project/Blockchain/nft/kem-nft/contracts/Ownable.sol": {
+      "lastModificationDate": 1642587859621,
+      "contentHash": "5206892e5f948db713efae89870ebfd4",
+      "sourceName": "contracts/Ownable.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Ownable"
+      ]
     }
   }
 }

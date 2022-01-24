@@ -21,7 +21,8 @@ interface KittyInterface {
   );
 }
 contract ZombieFeeding is ZombieFactory {
-    /**
+
+    /*
      * ckAddress is contract address of kittyAddress on ETH blockchain
      * ref : https://etherscan.io/token/0x06012c8cf97BEaD5deAe237070F9587f8E7A266d
      * we will create the kittyContract by the address of the kittyInterface
@@ -29,10 +30,10 @@ contract ZombieFeeding is ZombieFactory {
     address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
     KittyInterface kittyContract = KittyInterface(ckAddress);
     /**
-     * ownerOf : modifier to require zombie is own of user who excuse the contract
+     * ownerOfZombie : modifier to require zombie is own of user who excuse the contract
      * @param zombieId : id of the zombie need to be checked
      */  
-    modifier ownerOf(uint zombieId) {
+    modifier ownerOfZombie(uint zombieId) {
         //make sure the user excuse this contract same as the mapping zombieToOwer
         (bool res , address add) = PROTECTED_getAddressByZombieID(zombieId);
         require(res == true);
@@ -97,13 +98,13 @@ contract ZombieFeeding is ZombieFactory {
 
     /**
      * PROTECTED_feedAndMultiply : protected function that will perform the zombie bite another one and create new zombie
-     * modifier 'ownerOf()' mean that user excute this contract must own the zombie
+     * modifier 'ownerOfZombie()' mean that user excute this contract must own the zombie
      * this function will only permit user that have own the zombie to excuse this
      * change the 'public' into 'internal' to check the security
      * @param zombieID : id of the zombie
      * @param targetDna : DNA of the one is bited
      */
-    function PROTECTED_feedAndMultiply(uint zombieID, uint targetDna, string memory species) internal ownerOf(zombieID) {
+    function PROTECTED_feedAndMultiply(uint zombieID, uint targetDna, string memory species) internal ownerOfZombie(zombieID) {
         //storage mean the zombie is storage from blockchain network
         Zombie storage zombie = ls_zombies[zombieID];
         //make sure the zombie is ready

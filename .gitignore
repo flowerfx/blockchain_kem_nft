@@ -31,3 +31,6 @@
 *.out
 *.app
 node_modules
+
+artifacts
+bin

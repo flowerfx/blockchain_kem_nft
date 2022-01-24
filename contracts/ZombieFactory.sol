@@ -1,10 +1,16 @@
 //Contract based on [https://docs.openzeppelin.com/contracts/3.x/erc721](https://docs.openzeppelin.com/contracts/3.x/erc721)
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
+//use safe math
+import "./SafeMath.sol";
 //import ownable to this
-//import "@openzeppelin/contracts/access/Ownable.sol";
 import "./Ownable.sol";
+//
 contract ZombieFactory is Ownable {
+    //use safemath
+    using SafeMath for uint256;
+    using SafeMath32 for uint32;
+    using SafeMath16 for uint16;
     //this variable is store enternal on blockchain
     //dna of the zombie will has 16 character
     uint dnaDigits = 16;
@@ -101,7 +107,8 @@ contract ZombieFactory is Ownable {
         // msg.sender is global value that handle the address of the user in excusing this contract
         // @param len is the id of the zombie
         zombieToOwner[len] = msg.sender;
-        ownerZombieCount[msg.sender]++;
+        //++
+        ownerZombieCount[msg.sender] = ownerZombieCount[msg.sender].add(1);
         //emit the event in blockchain network
         emit EVENT_newZombie(len, name, dna);
     }

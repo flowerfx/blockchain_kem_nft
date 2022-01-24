@@ -5,6 +5,11 @@ pragma solidity ^0.8.0;
 import "./ZombieHelper.sol";
 
 contract ZombieAttack is ZombieHelper {
+    //use safemath
+    using SafeMath for uint256;
+    using SafeMath32 for uint32;
+    using SafeMath16 for uint16;
+    //
     uint randNonce = 0;
     uint attackVictoryProbability = 70;
     /************************************
@@ -26,13 +31,19 @@ contract ZombieAttack is ZombieHelper {
         uint rand = PROTECTED_randMod(100);
         //check win or los
         if(rand <= attackVictoryProbability) {
-            myZombie.winCount ++;
-            myZombie.level ++;
-            enemyZombie.lossCount ++;
+            //++
+            myZombie.winCount = myZombie.winCount.add(1);
+            //++
+            myZombie.level = myZombie.level.add(1);
+            //--
+            enemyZombie.lossCount = enemyZombie.lossCount.sub(1);
+            //feed and add zombie
             PROTECTED_feedAndMultiply(zombieId, enemyZombie.dna, "zombie");
         } else {
-            myZombie.lossCount ++;
-            enemyZombie.winCount ++;
+            //++
+            myZombie.lossCount = myZombie.lossCount.add(1);
+            //++
+            enemyZombie.winCount = enemyZombie.winCount.add(1);
             //trigger cool down when zombie attack complete
             PROTECTED_triggerCooldown(myZombie);
         }
@@ -47,7 +58,9 @@ contract ZombieAttack is ZombieHelper {
       * @return number in uint as a random number
       */
     function PROTECTED_randMod(uint modulus) internal returns(uint){
-        randNonce++;
+        //++
+        randNonce = randNonce.add(1);
+        //
         uint value = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randNonce)));
         return value % modulus;
     }

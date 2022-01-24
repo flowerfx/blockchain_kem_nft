@@ -4,8 +4,11 @@ pragma solidity ^0.8.0;
 
 import "./ZombieFeeding.sol";
 
-
 contract ZombieHelper is ZombieFeeding {
+    //use safemath
+    using SafeMath for uint256;
+    using SafeMath32 for uint32;
+    using SafeMath16 for uint16;
     //fee to level up a zombie by ether
     uint levelUpFee = 0.001 ether;
     /**
@@ -48,8 +51,8 @@ contract ZombieHelper is ZombieFeeding {
     function levelUp(uint zombieId) external payable ownerOfZombie(zombieId) {
         //check that user have paid fee
         require(msg.value == levelUpFee);
-        //
-        ls_zombies[zombieId].level ++;
+        //safe math
+        ls_zombies[zombieId].level = ls_zombies[zombieId].level.add(1);
     }
     /**
      * changeName : external function change name of the zombie, and can be trigger outside the contract
@@ -86,8 +89,10 @@ contract ZombieHelper is ZombieFeeding {
         uint counter = 0;
         for (uint i = 0; i < ls_zombies.length; i++) {
             if (zombieToOwner[i] == owner) {
+                //assign
                 result[counter] = i;
-                counter++;
+                //safe math
+                counter = counter.add(1);
             }
         }
         return result;
