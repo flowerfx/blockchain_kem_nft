@@ -21,6 +21,6 @@
     "@alch/alchemy-web3": "^1.1.9",
     "@openzeppelin/contracts": "^4.4.1",
     "dotenv": "^10.0.0",
-    "web3": "0.19.0"
+    "web3": "^1.7.0"
   }
 }
