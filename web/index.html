@@ -15,17 +15,20 @@
       var cryptoZombies;
       var userAccount;
       var web3provider;
+      var web3accounts;
 
       function startApp() {
         //
-        //var cryptoZombiesAddress = "0xA82afB78D387b6Ab503f76023aA04D71Ed4e9edE";
-        var cryptoZombiesAddress = "0x11306f11876BA788Fd00574De6DAC78e24510595";
+        var cryptoZombiesAddress = "0xA82afB78D387b6Ab503f76023aA04D71Ed4e9edE";
+        //var cryptoZombiesAddress = "0x11306f11876BA788Fd00574De6DAC78e24510595";
         cryptoZombies = new web3.eth.Contract(cryptoZombiesABI, cryptoZombiesAddress);
         //
         var accountInterval = setInterval(function() {
           // Check if account has changed
-          if (web3.eth.accounts[0] !== userAccount) {
-            userAccount = web3.eth.accounts[0];
+          if (web3accounts[0] !== userAccount) {
+            userAccount = web3accounts[0];
+            //
+            console.log('userAccount address = ' + userAccount);
             // Call a function to update the UI with the new account
             getZombiesByOwner(userAccount)
             .then(displayZombies);
@@ -102,18 +105,24 @@
       window.addEventListener('load', function() {
         // Checking if Web3 has been injected by the browser (Mist/MetaMask)
         if (window.ethereum) {
-          onsole.log('use window.ethereum provider');
+          console.log('use window.ethereum provider');
           web3provider = window.ethereum;
           try {
             // Request account access
             const start_eth = async function() {
-              await window.ethereum.enable();
+              //get account
+              web3accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+              //create web3
+              web3 = new Web3(web3provider);
               // Now you can start your app & access web3 freely:
               startApp()
             }
             //excuse function
             start_eth();
           } catch (error) {
+            if (error.code === 4001) {
+              // User rejected request
+            }
             // User denied account access...
             console.error("User denied account access")
           }
@@ -122,6 +131,8 @@
         else if (window.web3) {
           console.log('Web3 Detected! ' + window.web3.currentProvider.constructor.name)
           web3provider = window.web3.currentProvider;
+          //set accounts
+          web3accounts = web3.eth.accounts;
           // Now you can start your app & access web3 freely:
           startApp()
         }
@@ -131,6 +142,8 @@
           web3provider = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/v3/60ffea0413f14a27a105d3c0224e1260'));
           console.log("isConnected=");
           window.web3.eth.net.isListening().then(console.log);
+          //set accounts
+          web3accounts = web3.eth.accounts;
           // Now you can start your app & access web3 freely:
           startApp()
         }
